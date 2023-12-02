@@ -27,7 +27,6 @@ fn main() {
 
 
 fn parse_game(input: &str) -> Game {
-    println!("yo");
     let game_id = input.split_whitespace().nth(1).unwrap().split(":").nth(0).unwrap();
     let sets_string = input.split(":").nth(1).unwrap().split(";");
     let mut sets: Vec<Set> = Vec::new();
@@ -58,8 +57,6 @@ fn parse_game(input: &str) -> Game {
 
     for i in 0..sets.len() {
         if sets[i].red > 12 || sets[i].green > 13 || sets[i].blue > 14 {
-            print!("ææææææææææææææææææ");
-            println!("{} {} {}", sets[i].red, sets[i].green, sets[i].blue);
             possible = false;
         }
     }
