@@ -1,11 +1,3 @@
-fn main() {
-    let input = include_str!("input.txt");
-    let result = part1(input);
-    println!("Part 1: {}", result); // 175 too low
-    println!("Hello, world!");
-}
-
-
 struct Set {
     red: i64,
     green: i64,
@@ -18,15 +10,20 @@ struct Game {
     possible: bool
 }
 
-// impl count_sets for Game {
-//     fn count_sets(&self) -> i64 {
-//         let mut count = 0;
-//         for i in 0..self.sets.len() {
-//             count += self.sets[i].red + self.sets[i].green + self.sets[i].blue;
-//         }
-//         return count;
-//     }
-// }
+struct PowerCube {
+    set: Set,
+    power: i64
+}
+
+
+fn main() {
+    let input = include_str!("input.txt");
+    let result = part1(input);
+    let result2 = part2(input);
+    println!("Part 1: {}", result);
+    println!("Part 2: {}", result2);
+}
+
 
 
 fn parse_game(input: &str) -> Game {
@@ -76,12 +73,37 @@ fn parse_game(input: &str) -> Game {
     return game;
 }
 
- 
-// fn count_possible_sets(game: &Game) -> i64 {
+fn create_power_cube(game: Game) -> PowerCube {
+    let mut min_red = 0;
+    let mut min_green = 0;
+    let mut min_blue = 0;
 
-// }
+    for set in game.sets {
+        if set.red > min_red {
+            min_red = set.red;
+        }
+        if set.green > min_green {
+            min_green = set.green;
+        }
+        if set.blue > min_blue {
+            min_blue = set.blue;
+        }
+    }
 
-fn part1(input: &str) -> i64{
+    let power_cube = PowerCube {
+        set: Set {
+            red: min_red,
+            green: min_green,
+            blue: min_blue,
+        },
+        power: min_red * min_green * min_blue,
+    };
+
+    return power_cube;
+}
+
+
+fn part1(input: &str) -> i64 {
     let input = 
         input
         .split("\n")
@@ -96,14 +118,35 @@ fn part1(input: &str) -> i64{
     return id_sum as i64;
 }
 
+fn part2(input: &str) -> i64 {
+    let input = 
+        input
+        .split("\n")
+        .map(|x| parse_game(x))
+        .map(|x| create_power_cube(x));
+
+    let mut power_sum = 0;
+    for game in input {
+        power_sum += game.power;
+    }
+
+    return power_sum;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_example() {
+    fn test_example_part1() {
         let test_input = include_str!("example_input.txt");
         assert_eq!(part1(test_input), 8);
+    }
+
+    #[test]
+    fn test_example_part2() {
+        let test_input = include_str!("example_input.txt");
+        assert_eq!(part2(test_input), 2286);
     }
 
     #[test]
