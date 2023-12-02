@@ -38,11 +38,6 @@ fn convert_string_numbers(input: &str) -> String {
     all_numbers
 }
 
-fn extract_numbers_part2(input: &str) -> String {
-    input.split("\n")
-        .map(|x| convert_string_numbers(&x))
-        .collect::<Vec<_>>().join("")
-}
 
 fn first_and_last_number(input: &str) -> i64 {
     let first = input.chars().nth(0); 
@@ -70,7 +65,7 @@ fn part2(input: &str) -> i64{
     let input = 
         input
         .split("\n")
-        .map(|x| extract_numbers_part2(x))
+        .map(|x| convert_string_numbers(x))
         .map(|x| first_and_last_number(&x))
         .sum();
     return input;
@@ -107,12 +102,6 @@ mod tests {
     fn test_filter_numbers_part2() {
         let test_input1 = "ogtwojeoid3zero6oigjdf9gfivefive";
         assert_eq!(convert_string_numbers(&test_input1), "2306955");
-    }
-
-    #[test]
-    fn test_filter_numbers_part2222() {
-        let test_input1 = "ogtwojeoid3zero6oigjdf9gfivefive";
-        assert_eq!(extract_numbers_part2(&test_input1), "2306955");
     }
 
     #[test]
