@@ -1,4 +1,4 @@
-use std::collections::{BTreeSet, HashMap};
+use std::collections::HashMap;
 
 fn main() {
     // https://adventofcode.com/2024/day/1
@@ -44,12 +44,7 @@ fn part1(input: &str) -> i64{
     let mut sum = 0;
 
     for (i, x) in first_list.iter().enumerate() {
-        let second = second_list.get(i).unwrap();
-        if *x > *second {
-            sum += x - second;
-        }else {
-            sum += second - x;
-        }
+        sum += (x - second_list.get(i).unwrap()).abs();
     }
 
     return sum;
@@ -60,17 +55,17 @@ fn part2(input: &str) -> i64{
         parse_input(input);
 
     let mut first_list = Vec::new();
-    let mut second_map = HashMap::new();
+    let mut occurance_map = HashMap::new();
 
     for (i, x) in parsed_input.iter().enumerate() {
         if i % 2 == 0 {
             first_list.push(*x);
         } else {
-            if second_map.contains_key(x) {
-                let value = second_map.get_mut(x).unwrap();
+            if occurance_map.contains_key(x) {
+                let value = occurance_map.get_mut(x).unwrap();
                 *value += 1;
             } else {
-                second_map.insert(*x, 1);
+                occurance_map.insert(*x, 1);
             }
         }
     }
@@ -78,7 +73,7 @@ fn part2(input: &str) -> i64{
     let mut sum = 0;
 
     for x in first_list {
-        match second_map.get_key_value(&x){
+        match occurance_map.get_key_value(&x){
             Some((_, value)) => {
                 sum += value * x;
             },
