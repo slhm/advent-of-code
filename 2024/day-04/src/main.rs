@@ -30,107 +30,97 @@ fn parse_input(input: &str) -> Vec<Vec<String>> {
     return lines;
 }
 
-fn check_horizontal_right(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    // println!("mas_array: {:?}", mas_array);
-    // println!("input: {:?}", input);
-    for i in 0..mas_array.len() {
+fn check_horizontal_right(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if y + i >= input[x].len() {
             return false;
         }
-        if input[x][y + i] != mas_array[i] {
+        if input[x][y + i] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_horizontal_left(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_horizontal_left(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+
+    for i in 0..word.len() {
         if y < i {
             return false;
         }
-        if input[x][y - i] != mas_array[i] {
+        if input[x][y - i] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_vertical_down(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_vertical_down(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x + i >= input.len() {
             return false;
         }
-        if input[x + i][y] != mas_array[i] {
+        if input[x + i][y] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_vertical_up(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
-        // println!("x: {}, y: {}, i: {}, mas_array[i]: {}", x, y, i, mas_array[i]);
+fn check_vertical_up(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x < i {
             return false;
         }
-        if input[x - i][y] != mas_array[i] {
+        if input[x - i][y] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_diagonal_down_right(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_diagonal_down_right(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x + i >= input.len() || y + i >= input[x].len() {
             return false;
         }
-        if input[x + i][y + i] != mas_array[i] {
+        if input[x + i][y + i] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_diagonal_down_left(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_diagonal_down_left(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x + i >= input.len() || y < i {
             return false;
         }
-        if input[x + i][y - i] != mas_array[i] {
+        if input[x + i][y - i] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_diagonal_up_right(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_diagonal_up_right(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x < i || y + i >= input[x].len() {
             return false;
         }
-        if input[x - i][y + i] != mas_array[i] {
+        if input[x - i][y + i] != word[i] {
             return false;
         }
     }
     return true;
 }
 
-fn check_diagonal_up_left(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool {
-    let mas_array = search_word();
-    for i in 0..mas_array.len() {
+fn check_diagonal_up_left(x: usize, y: usize, word: &Vec<String>, input: &Vec<Vec<String>>) -> bool {
+    for i in 0..word.len() {
         if x < i || y < i {
             return false;
         }
-        if input[x - i][y - i] != mas_array[i] {
+        if input[x - i][y - i] != word[i] {
             return false;
         }
     }
@@ -139,36 +129,80 @@ fn check_diagonal_up_left(x: usize, y: usize, input: &Vec<Vec<String>>) -> bool 
 
 fn check_for_xmas(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
     let mut count = 0;
+    let word = &search_word();
     if input[x][y] == "X" {
-        if check_horizontal_right(x, y, input) {
+        if check_horizontal_right(x, y, word, input) {
             count += 1;
         }
-        if check_horizontal_left(x, y, input) {
+        if check_horizontal_left(x, y, word, input) {
             count += 1;
         }
-        if check_vertical_down(x, y, input) {
+        if check_vertical_down(x, y, word, input) {
             count += 1;
         }
-        if check_vertical_up(x, y, input) {
+        if check_vertical_up(x, y, word, input) {
             count += 1;
         }
-        if check_diagonal_down_right(x, y, input) {
+        if check_diagonal_down_right(x, y, word, input) {
             count += 1;
         }
-        if check_diagonal_down_left(x, y, input) {
+        if check_diagonal_down_left(x, y, word, input) {
             count += 1;
         }
-        if check_diagonal_up_right(x, y, input) {
+        if check_diagonal_up_right(x, y, word, input) {
             count += 1;
         }
-        if check_diagonal_up_left(x, y, input) {
+        if check_diagonal_up_left(x, y, word, input) {
             count += 1;
         }
     }
     return count;
 }
 
+
+// fn check_for_mas(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
+//     let mut count = 0;
+//     if input[x][y] == "M" {
+//         if check_horizontal_right(x, y, input) {
+//             count += 1;
+//         }
+//         if check_horizontal_left(x, y, input) {
+//             count += 1;
+//         }
+//         if check_vertical_down(x, y, input) {
+//             count += 1;
+//         }
+//         if check_vertical_up(x, y, input) {
+//             count += 1;
+//         }
+//         if check_diagonal_down_right(x, y, input) {
+//             count += 1;
+//         }
+//         if check_diagonal_down_left(x, y, input) {
+//             count += 1;
+//         }
+//         if check_diagonal_up_right(x, y, input) {
+//             count += 1;
+//         }
+//         if check_diagonal_up_left(x, y, input) {
+//             count += 1;
+//         }
+//     }
+//     return count;
+// }
+
 fn count_xmas(input: Vec<Vec<String>>) -> i64 {
+
+    let mut count = 0;
+    for x in 0..input.len() {
+        for y in 0..input[x].len() {
+            count += check_for_xmas(x, y, &input);
+        }
+    }
+    return count;
+}
+
+fn count_mas(input: Vec<Vec<String>>) -> i64 {
 
     let mut count = 0;
     for x in 0..input.len() {
@@ -189,7 +223,9 @@ fn part1(input: &str) -> i64{
 
 
 fn part2(input: &str) -> i64{
-    let parsed_input = true;
+    let parsed_input = parse_input(input);
+
+
     return 0;
 }
 
@@ -210,11 +246,17 @@ mod tests {
     }
 
     #[test]
-    fn test_example1() {
+    fn test_example_part1() {
         let test_input = include_str!("input_example.txt");
         assert_eq!(part1(test_input), 18);
     }
 
+
+    #[test]
+    fn test_example_part2() {
+        let test_input = include_str!("input_example.txt");
+        assert_eq!(part2(test_input), 9);
+    }
 
     #[test]
     fn test_test1() {
@@ -222,13 +264,11 @@ mod tests {
         assert_eq!(part1(test_input), 1);
     }
 
-
-
     #[test]
     fn test_horizontal_right() {
         let test_input = include_str!("input_test.txt");
         let input = parse_input(test_input);
-        assert_eq!(check_horizontal_right(2, 1, &input), true);
+        assert_eq!(check_horizontal_right(2, 1, &search_word(), &input), true);
     }
 
     #[test]
@@ -236,9 +276,8 @@ mod tests {
         let example = vec![
             vec!["M", "S", "A", "M", "X"].into_iter().map(String::from).collect()
         ];
-        assert_eq!(check_horizontal_left(0, 4, &example), true);
+        assert_eq!(check_horizontal_left(0, 4, &search_word(), &example), true);
     }
-
 
     #[test]
     fn test_up() {
@@ -248,9 +287,8 @@ mod tests {
             vec!["M"].into_iter().map(String::from).collect(),
             vec!["X"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_vertical_up(3, 0, &example), true);
+        assert_eq!(check_vertical_up(3, 0, &search_word(), &example), true);
     }
-
 
     #[test]
     fn test_down() {
@@ -260,7 +298,7 @@ mod tests {
             vec!["A"].into_iter().map(String::from).collect(),
             vec!["S"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_vertical_down(0, 0, &example), true);
+        assert_eq!(check_vertical_down(0, 0, &search_word(), &example), true);
     }
 
     #[test]
@@ -271,7 +309,7 @@ mod tests {
             vec!["A", "S", "A", "M"].into_iter().map(String::from).collect(),
             vec!["S", "X", "M", "S"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_diagonal_down_right(0, 0, &example), true);
+        assert_eq!(check_diagonal_down_right(0, 0, &search_word(), &example), true);
     }
 
     #[test]
@@ -282,7 +320,7 @@ mod tests {
             vec!["A", "A", "A", "M"].into_iter().map(String::from).collect(),
             vec!["S", "X", "M", "S"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_diagonal_down_left(0, 3, &example), true);
+        assert_eq!(check_diagonal_down_left(0, 3, &search_word(), &example), true);
     }
 
     #[test]
@@ -293,7 +331,7 @@ mod tests {
             vec!["A", "M", "A", "M"].into_iter().map(String::from).collect(),
             vec!["X", "X", "M", "S"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_diagonal_up_right(3, 0, &example), true);
+        assert_eq!(check_diagonal_up_right(3, 0, &search_word(), &example), true);
     }
 
     #[test]
@@ -304,7 +342,7 @@ mod tests {
             vec!["A", "M", "M", "M"].into_iter().map(String::from).collect(),
             vec!["X", "X", "M", "X"].into_iter().map(String::from).collect(),
         ];
-        assert_eq!(check_diagonal_up_left(3, 3, &example), true);
+        assert_eq!(check_diagonal_up_left(3, 3, &search_word(), &example), true);
     }
 
     #[test]
