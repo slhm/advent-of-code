@@ -16,8 +16,6 @@ fn search_word() -> Vec<String> {
     return search_rest;
 }
 
-
-
 fn parse_input(input: &str) -> Vec<Vec<String>> {
     let mut lines = vec![];
     for line in input.lines() {
@@ -127,10 +125,10 @@ fn check_diagonal_up_left(x: usize, y: usize, word: &Vec<String>, input: &Vec<Ve
     return true;
 }
 
-fn check_for_xmas(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
+fn count_xmas_at_position(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
     let mut count = 0;
     let word = &search_word();
-    if input[x][y] == "X" {
+    if input[x][y] == word[0] {
         if check_horizontal_right(x, y, word, input) {
             count += 1;
         }
@@ -159,44 +157,39 @@ fn check_for_xmas(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
     return count;
 }
 
-
-// fn check_for_mas(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
-//     let mut count = 0;
-//     if input[x][y] == "M" {
-//         if check_horizontal_right(x, y, input) {
-//             count += 1;
-//         }
-//         if check_horizontal_left(x, y, input) {
-//             count += 1;
-//         }
-//         if check_vertical_down(x, y, input) {
-//             count += 1;
-//         }
-//         if check_vertical_up(x, y, input) {
-//             count += 1;
-//         }
-//         if check_diagonal_down_right(x, y, input) {
-//             count += 1;
-//         }
-//         if check_diagonal_down_left(x, y, input) {
-//             count += 1;
-//         }
-//         if check_diagonal_up_right(x, y, input) {
-//             count += 1;
-//         }
-//         if check_diagonal_up_left(x, y, input) {
-//             count += 1;
-//         }
-//     }
-//     return count;
-// }
-
 fn count_xmas(input: Vec<Vec<String>>) -> i64 {
 
     let mut count = 0;
     for x in 0..input.len() {
         for y in 0..input[x].len() {
-            count += check_for_xmas(x, y, &input);
+            count += count_xmas_at_position(x, y, &input);
+        }
+    }
+    return count;
+}
+
+fn count_mas_at_position(x: usize, y: usize, input: &Vec<Vec<String>>) -> i64 {
+    let mut count = 0;
+    if input[x][y] == "A" {
+        if input[x - 1][y - 1] == "M" && input[x - 1][y + 1] == "M" { // up left and up right
+            if input[x + 1][y - 1] == "S" && input[x + 1][y + 1] == "S" { // down left and down right
+                count += 1;
+            }
+        }
+        if input[x - 1][y - 1] == "M" && input[x + 1][y - 1] == "M" { // up left and down left
+            if input[x - 1][y + 1] == "S" && input[x + 1][y + 1] == "S" { // up right and down right
+                count += 1;
+            }
+        }
+        if input[x - 1][y + 1] == "M" && input[x + 1][y + 1] == "M" { // up right and down right
+            if input[x - 1][y - 1] == "S" && input[x + 1][y - 1] == "S" { // up left and down left
+                count += 1;
+            }
+        }
+        if input[x + 1][y - 1] == "M" && input[x + 1][y + 1] == "M" { // down left and down right
+            if input[x - 1][y - 1] == "S" && input[x - 1][y + 1] == "S" { // up left and up right
+                count += 1;
+            }
         }
     }
     return count;
@@ -205,9 +198,9 @@ fn count_xmas(input: Vec<Vec<String>>) -> i64 {
 fn count_mas(input: Vec<Vec<String>>) -> i64 {
 
     let mut count = 0;
-    for x in 0..input.len() {
-        for y in 0..input[x].len() {
-            count += check_for_xmas(x, y, &input);
+    for x in 1..input.len() - 1 {
+        for y in 1..input[x].len() - 1 {
+            count += count_mas_at_position(x, y, &input);
         }
     }
     return count;
@@ -225,8 +218,7 @@ fn part1(input: &str) -> i64{
 fn part2(input: &str) -> i64{
     let parsed_input = parse_input(input);
 
-
-    return 0;
+    return count_mas(parsed_input);
 }
 
 
